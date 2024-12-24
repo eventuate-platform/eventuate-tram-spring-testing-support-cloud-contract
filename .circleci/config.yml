@@ -6,6 +6,7 @@ workflows:
     jobs:
       - eventuate-gradle-build-and-test/build-and-test:
           name: build-and-publish
+          java_version_to_install: "17"
           context:
             - publish
           script: |
