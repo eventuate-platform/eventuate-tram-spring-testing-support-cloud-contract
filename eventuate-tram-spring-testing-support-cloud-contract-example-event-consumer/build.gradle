@@ -1,0 +1,26 @@
+
+apply plugin: 'org.springframework.boot'
+
+dependencies {
+    implementation "org.springframework.boot:spring-boot-starter-web:$springBootVersion"
+    implementation "io.eventuate.tram.core:eventuate-tram-spring-events-subscriber-starter"
+    implementation "io.eventuate.tram.core:eventuate-tram-spring-jdbc-kafka"
+
+
+    testImplementation "org.springframework.boot:spring-boot-starter-test:$springBootVersion"
+
+
+    testImplementation project(":eventuate-tram-spring-testing-support-cloud-contract")
+    testImplementation("org.springframework.cloud:spring-cloud-starter-contract-stub-runner")
+    testImplementation "io.eventuate.util:eventuate-util-test"
+
+}
+
+
+test {
+    useJUnitPlatform()
+    systemProperty "stubrunner.repositoryRoot", contractRepoUrl
+}
+
+test.dependsOn(":eventuate-tram-spring-testing-support-cloud-contract-example-event-publisher:publishStubsPublicationToStubsRepository")
+

@@ -1,0 +1,83 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        maven {
+          url "https://plugins.gradle.org/m2/"
+        }
+        eventuateMavenRepoUrl.split(',').each { repoUrl -> maven { url repoUrl } }
+    }
+    dependencies {
+        classpath "io.eventuate.plugins.gradle:eventuate-plugins-gradle-publish:$eventuatePluginsGradleVersion"
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion"
+        classpath "org.springframework.cloud:spring-cloud-contract-gradle-plugin:$springCloudContractDependenciesVersion"
+    }
+}
+
+apply plugin: io.eventuate.tram.spring.testing.cloudcontract.plugins.gradle.ConfigureContractRepoDirPlugin
+
+
+allprojects {
+    group = "io.eventuate.tram.testingsupport.springcloudcontract"
+}
+
+apply plugin: "io.eventuate.plugins.gradle.publish.EventuatePublish"
+
+allprojects {
+
+    repositories {
+        mavenCentral()
+        eventuateMavenRepoUrl.split(',').each { repoUrl -> maven { url repoUrl } }
+    }
+
+    if (project.name.endsWith("-bom")) {
+        apply plugin: 'java-platform'
+    } else {
+
+        apply plugin: 'java-library'
+
+        java {
+            toolchain {
+                languageVersion.set(JavaLanguageVersion.of(17))
+            }
+        }
+        dependencies {
+
+            implementation(platform("io.eventuate.platform:eventuate-platform-dependencies:$eventuatePlatformVersion"))
+
+            if (project.name.contains("-example-")) {
+                implementation(platform("org.springframework.boot:spring-boot-dependencies:$springBootVersion"))
+                implementation(platform("org.springframework.cloud:spring-cloud-contract-dependencies:$springCloudContractDependenciesVersion"))
+            }
+
+            test {
+                useJUnitPlatform()
+            }
+        }
+
+    }
+}
+
+gradle.projectsEvaluated {
+    tasks.register('aggregateJavaDocs', Javadoc) {
+        description = 'Aggregated Javadoc API documentation of all subprojects.'
+        group = JavaBasePlugin.DOCUMENTATION_GROUP
+
+        destinationDir file("$buildDir/docs/javadoc")
+    }
+
+    tasks.register('aggregateJavaDocsJar', Jar) {
+        dependsOn project.aggregateJavaDocs
+//        classifier = 'javadoc'
+        from 'build/docs/javadoc'
+    }
+
+    artifacts {
+        archives project.aggregateJavaDocsJar
+    }
+
+    javadocJar.dependsOn(aggregateJavaDocs)
+    generateMetadataFileForMavenPublication.dependsOn(project.aggregateJavaDocsJar)
+
+}
+
+

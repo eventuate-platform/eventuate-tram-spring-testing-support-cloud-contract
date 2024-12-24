@@ -1,0 +1,10 @@
+rootProject.name="eventuate-tram-spring-testing-support-cloud-contract"
+
+include "eventuate-tram-spring-testing-support-cloud-contract"
+include "eventuate-tram-spring-testing-support-cloud-contract-plugins-gradle"
+
+include "eventuate-tram-spring-testing-support-cloud-contract-example-event-publisher"
+include "eventuate-tram-spring-testing-support-cloud-contract-example-event-consumer"
+
+include "eventuate-tram-spring-testing-support-cloud-contract-example-command-client"
+include "eventuate-tram-spring-testing-support-cloud-contract-example-command-service"

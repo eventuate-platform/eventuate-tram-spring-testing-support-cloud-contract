@@ -1,0 +1,38 @@
+
+apply plugin: 'org.springframework.boot'
+apply plugin: 'org.springframework.cloud.contract'
+apply plugin: io.eventuate.tram.spring.testing.cloudcontract.plugins.gradle.PublishStubsPlugin
+
+
+
+dependencies {
+    implementation "org.springframework.boot:spring-boot-starter-web:$springBootVersion"
+    implementation "io.eventuate.tram.core:eventuate-tram-spring-commands-starter"
+    implementation "io.eventuate.tram.core:eventuate-tram-spring-jdbc-kafka"
+
+
+    testImplementation "org.springframework.boot:spring-boot-starter-test:$springBootVersion"
+
+
+    contractTestImplementation project(":eventuate-tram-spring-testing-support-cloud-contract")
+    contractTestImplementation("org.springframework.cloud:spring-cloud-starter-contract-stub-runner")
+    testImplementation "io.eventuate.util:eventuate-util-test"
+
+}
+
+
+test {
+    useJUnitPlatform()
+}
+
+contracts {
+    testFramework = "JUNIT5"
+    baseClassForTests = "io.eventuate.tram.commandservice.BaseClass"
+    ignoredFiles = [ "*Command.groovy" ]
+}
+
+contractTest {
+    useJUnitPlatform()
+}
+
+contractTest.dependsOn(publishStubsPublicationToMavenLocal)
