@@ -6,8 +6,8 @@ apply plugin: io.eventuate.tram.spring.testing.cloudcontract.plugins.gradle.Publ
 
 dependencies {
     implementation "org.springframework.boot:spring-boot-starter-web:$springBootVersion"
-    implementation "io.eventuate.tram.core:eventuate-tram-spring-events-publisher-starter"
-    implementation "io.eventuate.tram.core:eventuate-tram-spring-producer-jdbc"
+    implementation "io.eventuate.tram.core:eventuate-tram-spring-events-publisher-starter:$eventuateTramVersion"
+    implementation "io.eventuate.tram.core:eventuate-tram-spring-producer-jdbc:$eventuateTramVersion"
 
 
     contractTestImplementation("org.springframework.boot:spring-boot-starter-test")

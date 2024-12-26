@@ -1,7 +1,7 @@
 
 dependencies {
 
-    api "io.eventuate.tram.core:eventuate-tram-spring-in-memory"
+    api "io.eventuate.tram.core:eventuate-tram-spring-in-memory:$eventuateTramVersion"
     api "org.springframework.cloud:spring-cloud-starter-contract-verifier:$springCloudContractDependenciesVersion"
 
 

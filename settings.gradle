@@ -1,5 +1,6 @@
 rootProject.name="eventuate-tram-spring-testing-support-cloud-contract"
 
+include "eventuate-tram-spring-testing-support-cloud-contract-bom"
 include "eventuate-tram-spring-testing-support-cloud-contract"
 include "eventuate-tram-spring-testing-support-cloud-contract-plugins-gradle"
 

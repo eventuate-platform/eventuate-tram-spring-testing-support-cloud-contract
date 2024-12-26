@@ -42,8 +42,6 @@ allprojects {
         }
         dependencies {
 
-            implementation(platform("io.eventuate.platform:eventuate-platform-dependencies:$eventuatePlatformVersion"))
-
             if (project.name.contains("-example-")) {
                 implementation(platform("org.springframework.boot:spring-boot-dependencies:$springBootVersion"))
                 implementation(platform("org.springframework.cloud:spring-cloud-contract-dependencies:$springCloudContractDependenciesVersion"))
