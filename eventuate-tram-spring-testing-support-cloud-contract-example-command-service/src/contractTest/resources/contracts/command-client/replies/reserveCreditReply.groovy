@@ -9,7 +9,7 @@ org.springframework.cloud.contract.spec.Contract.make {
 
     outputMessage {
         sentTo('reserveCreditReply')
-        body('''{}''')
+        body([])
         headers {
             header('reply_type', 'io.eventuate.tram.springcloudcontract.commandservice.CustomerCreditReserved')
             header('reply_outcome-type', 'SUCCESS')

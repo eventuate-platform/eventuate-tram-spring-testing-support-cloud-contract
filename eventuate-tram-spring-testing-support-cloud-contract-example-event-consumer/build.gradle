@@ -11,7 +11,7 @@ dependencies {
 
 
     testImplementation project(":eventuate-tram-spring-testing-support-cloud-contract")
-    testImplementation("org.springframework.cloud:spring-cloud-starter-contract-stub-runner")
+    testImplementation "org.springframework.cloud:spring-cloud-starter-contract-stub-runner"
     testImplementation "io.eventuate.util:eventuate-util-test:$eventuateUtilVersion"
 
 }

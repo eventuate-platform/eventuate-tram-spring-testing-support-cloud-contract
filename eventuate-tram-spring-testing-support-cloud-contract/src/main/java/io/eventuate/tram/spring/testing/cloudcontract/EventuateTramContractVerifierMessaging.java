@@ -15,7 +15,7 @@ public class EventuateTramContractVerifierMessaging extends ContractVerifierMess
     }
 
     @Override
-    protected ContractVerifierMessage convert(Message receive) {
-        return new ContractVerifierMessage(receive.getPayload(), new HashMap<>(receive.getHeaders()));
+    protected ContractVerifierMessage convert(Message message) {
+        return new ContractVerifierMessage(message.getPayload(), new HashMap<>(message.getHeaders()));
     }
 }

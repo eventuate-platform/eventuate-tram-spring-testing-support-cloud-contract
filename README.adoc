@@ -1,0 +1,23 @@
+= Eventuate Tram Spring Cloud Contract support
+
+This project enables the Spring Cloud Contract to be used to test Eventuate-based applications.
+
+== An Eventuate project
+
+image::https://eventuate.io/i/logo.gif[]
+
+This project is part of http://eventuate.io[Eventuate], which is a microservices collaboration platform.
+
+== Example code
+
+The development branches of the following projects use this project:
+
+* https://github.com/eventuate-tram/eventuate-tram-examples-customers-and-orders/tree/development[eventuate-tram-examples-customers-and-orders]
+* https://github.com/eventuate-tram/eventuate-tram-sagas-examples-customers-and-orders/tree/development[eventuate-tram-sagas-examples-customers-and-orders]
+
+
+== Contributing
+
+Contributions are welcome.
+
+Please sign a https://chrisrichardson.net/legal/[contributor license agreement].

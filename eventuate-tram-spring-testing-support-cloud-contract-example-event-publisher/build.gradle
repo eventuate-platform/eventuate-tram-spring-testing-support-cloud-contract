@@ -10,10 +10,9 @@ dependencies {
     implementation "io.eventuate.tram.core:eventuate-tram-spring-producer-jdbc:$eventuateTramVersion"
 
 
-    contractTestImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation "org.springframework.boot:spring-boot-starter-test"
 
-
-    testImplementation project(":eventuate-tram-spring-testing-support-cloud-contract")
+    contractTestImplementation project(":eventuate-tram-spring-testing-support-cloud-contract")
 
 }
 
