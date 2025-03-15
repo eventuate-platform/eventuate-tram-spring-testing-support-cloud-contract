@@ -35,4 +35,6 @@ contractTest {
     useJUnitPlatform()
 }
 
-contractTest.dependsOn(publishStubsPublicationToMavenLocal)
+if (project.tasks.findByName('publishStubsPublicationToMavenLocal')) {
+    contractTest.dependsOn(publishStubsPublicationToMavenLocal)
+}

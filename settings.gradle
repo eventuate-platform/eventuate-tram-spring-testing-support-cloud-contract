@@ -1,4 +1,4 @@
-rootProject.name="eventuate-tram-spring-testing-support-cloud-contract"
+rootProject.name="eventuate-tram-spring-testing-support-cloud-contract-parent"
 
 include "eventuate-tram-spring-testing-support-cloud-contract-bom"
 include "eventuate-tram-spring-testing-support-cloud-contract"

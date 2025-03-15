@@ -11,4 +11,4 @@ workflows:
             - publish
           script: |
             ./gradlew build
-            ./gradlew publishEventuateArtifacts
+            EXCLUDE_STUBS_FROM_PUBLISHING=true ./gradlew publishEventuateArtifacts

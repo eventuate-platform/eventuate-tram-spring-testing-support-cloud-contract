@@ -8,6 +8,10 @@ class PublishStubsPlugin implements Plugin<Project> {
 
     @Override
     void apply(Project project) {
+        if (System.getenv('EXCLUDE_STUBS_FROM_PUBLISHING') != null) {
+            System.out.println("excludeStubsFromPublishing")
+            return;
+        }
         project.apply(plugin: 'maven-publish')
         project.publishing {
             repositories {
