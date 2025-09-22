@@ -1,7 +1,6 @@
 package io.eventuate.tram.springcloudcontract.eventpublisher;
 
 import io.eventuate.tram.events.publisher.DomainEventPublisher;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -12,7 +11,6 @@ public class PublishingController {
 
     private final DomainEventPublisher domainEventPublisher;
 
-    @Autowired
     public PublishingController(DomainEventPublisher domainEventPublisher) {
         this.domainEventPublisher = domainEventPublisher;
     }

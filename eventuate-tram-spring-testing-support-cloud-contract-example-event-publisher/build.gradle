@@ -10,6 +10,9 @@ dependencies {
     implementation "io.eventuate.tram.core:eventuate-tram-spring-producer-jdbc:$eventuateTramVersion"
 
 
+    implementation "org.apache.httpcomponents.client5:httpclient5:5.4.4"
+
+
     testImplementation "org.springframework.boot:spring-boot-starter-test"
 
     contractTestImplementation project(":eventuate-tram-spring-testing-support-cloud-contract")

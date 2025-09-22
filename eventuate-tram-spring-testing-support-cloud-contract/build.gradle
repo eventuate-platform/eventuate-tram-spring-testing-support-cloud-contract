@@ -4,5 +4,10 @@ dependencies {
     api "io.eventuate.tram.core:eventuate-tram-spring-in-memory:$eventuateTramVersion"
     api "org.springframework.cloud:spring-cloud-starter-contract-verifier:$springCloudContractDependenciesVersion"
 
+    implementation "org.apache.httpcomponents.client5:httpclient5:5.4.4"
 
+
+}
+tasks.withType(Test).configureEach {
+    useJUnitPlatform()
 }
