@@ -18,7 +18,8 @@ import static org.mockito.Mockito.verify;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @AutoConfigureStubRunner(ids = "io.eventuate.tram.testingsupport.springcloudcontract:eventuate-tram-spring-testing-support-cloud-contract-example-event-publisher",
-        stubsMode = StubRunnerProperties.StubsMode.REMOTE )
+        stubsMode = StubRunnerProperties.StubsMode.REMOTE,
+        repositoryRoot = "${contractRepoUrl}" )
 @DirtiesContext
 public class OrderHistoryEventHandlersTest {
 

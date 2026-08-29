@@ -13,7 +13,8 @@ import org.springframework.test.annotation.DirtiesContext;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @AutoConfigureStubRunner(ids = "io.eventuate.tram.testingsupport.springcloudcontract:eventuate-tram-spring-testing-support-cloud-contract-example-command-service",
-        stubsMode = StubRunnerProperties.StubsMode.REMOTE
+        stubsMode = StubRunnerProperties.StubsMode.REMOTE,
+        repositoryRoot = "${contractRepoUrl}"
         )
 @DirtiesContext
 public class ReplyHandlersTest {

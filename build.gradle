@@ -63,13 +63,12 @@ gradle.projectsEvaluated {
         description = 'Aggregated Javadoc API documentation of all subprojects.'
         group = JavaBasePlugin.DOCUMENTATION_GROUP
 
-        destinationDir = layout.buildDirectory.dir("docs/javadoc").get().asFile
+        destinationDir = layout.buildDirectory.dir("docs/aggregateJavadoc").get().asFile
     }
 
     tasks.register('aggregateJavaDocsJar', Jar) {
-        dependsOn project.aggregateJavaDocs
 //        classifier = 'javadoc'
-        from 'build/docs/javadoc'
+        from project.aggregateJavaDocs
     }
 
     artifacts {

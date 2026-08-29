@@ -19,7 +19,7 @@ dependencies {
 
 test {
     useJUnitPlatform()
-    systemProperty "stubrunner.repositoryRoot", contractRepoUrl
+    systemProperty "contractRepoUrl", contractRepoUrl
 }
 
 test.dependsOn(":eventuate-tram-spring-testing-support-cloud-contract-example-event-publisher:publishStubsPublicationToStubsRepository")
