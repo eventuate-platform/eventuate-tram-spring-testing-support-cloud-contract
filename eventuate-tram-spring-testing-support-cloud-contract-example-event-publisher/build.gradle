@@ -5,15 +5,15 @@ apply plugin: io.eventuate.tram.spring.testing.cloudcontract.plugins.gradle.Publ
 
 
 dependencies {
-    implementation "org.springframework.boot:spring-boot-starter-web:$springBootVersion"
+    implementation "org.springframework.boot:spring-boot-starter-webmvc:$springBootVersion"
     implementation "io.eventuate.tram.core:eventuate-tram-spring-events-publisher-starter:$eventuateTramVersion"
     implementation "io.eventuate.tram.core:eventuate-tram-spring-producer-jdbc:$eventuateTramVersion"
 
 
-    implementation "org.apache.httpcomponents.client5:httpclient5:5.4.4"
+    implementation "org.apache.httpcomponents.client5:httpclient5:$httpClient5Version"
 
 
-    testImplementation "org.springframework.boot:spring-boot-starter-test"
+    testImplementation "org.springframework.boot:spring-boot-starter-jdbc-test:$springBootVersion"
 
     contractTestImplementation project(":eventuate-tram-spring-testing-support-cloud-contract")
 

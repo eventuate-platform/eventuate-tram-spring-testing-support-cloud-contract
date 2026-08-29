@@ -3,12 +3,13 @@ apply plugin: 'org.springframework.cloud.contract'
 apply plugin: 'maven-publish'
 
 dependencies {
-    implementation "org.springframework.boot:spring-boot-starter-web:$springBootVersion"
+    implementation "org.springframework.boot:spring-boot-starter-webmvc:$springBootVersion"
     implementation "io.eventuate.tram.core:eventuate-tram-spring-commands-starter:$eventuateTramVersion"
     implementation "io.eventuate.tram.core:eventuate-tram-spring-jdbc-kafka:$eventuateTramVersion"
 
 
-    testImplementation "org.springframework.boot:spring-boot-starter-test:$springBootVersion"
+    testImplementation "org.springframework.boot:spring-boot-starter-jdbc-test:$springBootVersion"
+    contractTestImplementation "org.springframework.boot:spring-boot-starter-webmvc-test:$springBootVersion"
 
 
     contractTestImplementation project(":eventuate-tram-spring-testing-support-cloud-contract")

@@ -2,12 +2,12 @@
 apply plugin: 'org.springframework.boot'
 
 dependencies {
-    implementation "org.springframework.boot:spring-boot-starter-web:$springBootVersion"
+    implementation "org.springframework.boot:spring-boot-starter-webmvc:$springBootVersion"
     implementation "io.eventuate.tram.core:eventuate-tram-spring-events-subscriber-starter:$eventuateTramVersion"
     implementation "io.eventuate.tram.core:eventuate-tram-spring-jdbc-kafka:$eventuateTramVersion"
 
 
-    testImplementation "org.springframework.boot:spring-boot-starter-test:$springBootVersion"
+    testImplementation "org.springframework.boot:spring-boot-starter-jdbc-test:$springBootVersion"
 
 
     testImplementation project(":eventuate-tram-spring-testing-support-cloud-contract")

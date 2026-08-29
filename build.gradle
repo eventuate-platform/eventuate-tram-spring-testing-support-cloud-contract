@@ -2,14 +2,15 @@ buildscript {
     repositories {
         mavenCentral()
         maven {
-          url "https://plugins.gradle.org/m2/"
+          url = "https://plugins.gradle.org/m2/"
         }
-        eventuateMavenRepoUrl.split(',').each { repoUrl -> maven { url repoUrl } }
+        eventuateMavenRepoUrl.split(',').each { repoUrl -> maven { url = repoUrl } }
     }
     dependencies {
         classpath "io.eventuate.plugins.gradle:eventuate-plugins-gradle-publish:$eventuatePluginsGradleVersion"
         classpath "org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion"
         classpath "org.springframework.cloud:spring-cloud-contract-gradle-plugin:$springCloudContractDependenciesVersion"
+        classpath "org.springframework.cloud:spring-cloud-contract-stub-runner:$springCloudContractDependenciesVersion"
     }
 }
 
@@ -26,7 +27,7 @@ allprojects {
 
     repositories {
         mavenCentral()
-        eventuateMavenRepoUrl.split(',').each { repoUrl -> maven { url repoUrl } }
+        eventuateMavenRepoUrl.split(',').each { repoUrl -> maven { url = repoUrl } }
     }
 
     if (project.name.endsWith("-bom")) {
@@ -43,9 +44,11 @@ allprojects {
         dependencies {
 
             if (project.name.contains("-example-")) {
-                implementation(platform("org.springframework.boot:spring-boot-dependencies:$springBootVersion"))
                 implementation(platform("org.springframework.cloud:spring-cloud-contract-dependencies:$springCloudContractDependenciesVersion"))
             }
+
+            testImplementation "org.junit.jupiter:junit-jupiter:$junitVersion"
+            testRuntimeOnly "org.junit.platform:junit-platform-launcher:$junitPlatformLauncherVersion"
 
             test {
                 useJUnitPlatform()
@@ -60,7 +63,7 @@ gradle.projectsEvaluated {
         description = 'Aggregated Javadoc API documentation of all subprojects.'
         group = JavaBasePlugin.DOCUMENTATION_GROUP
 
-        destinationDir file("$buildDir/docs/javadoc")
+        destinationDir = layout.buildDirectory.dir("docs/javadoc").get().asFile
     }
 
     tasks.register('aggregateJavaDocsJar', Jar) {
@@ -77,5 +80,4 @@ gradle.projectsEvaluated {
     generateMetadataFileForMavenPublication.dependsOn(project.aggregateJavaDocsJar)
 
 }
-
 
