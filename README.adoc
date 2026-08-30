@@ -8,6 +8,132 @@ image::https://eventuate.io/i/logo.gif[]
 
 This project is part of http://eventuate.io[Eventuate], which is a microservices collaboration platform.
 
+== Usage
+
+The producer publishes stubs; the consumer replays them against an in-memory Eventuate Tram
+transport, so neither side needs a database or a message broker.
+
+=== Producer side
+
+Apply the Spring Cloud Contract plugin and `PublishStubsPlugin`, and put the contracts in
+`src/contractTest/resources/contracts`:
+
+[source,groovy]
+----
+apply plugin: 'org.springframework.cloud.contract'
+apply plugin: io.eventuate.tram.spring.testing.cloudcontract.plugins.gradle.PublishStubsPlugin
+
+dependencies {
+    contractTestImplementation "io.eventuate.tram.testingsupport.springcloudcontract:eventuate-tram-spring-testing-support-cloud-contract:$eventuateTramSpringTestingSupportCloudContractVersion"
+}
+
+contracts {
+    testFramework = "JUNIT5"
+    baseClassForTests = "com.example.orders.BaseClass"
+}
+----
+
+A contract triggers a method on the base class and asserts on the resulting Eventuate Tram message.
+`sentTo` is the Eventuate destination - the aggregate type for a domain event, the command channel
+for a command:
+
+[source,groovy]
+----
+org.springframework.cloud.contract.spec.Contract.make {
+    label 'orderCreatedEvent'
+    input {
+        triggeredBy('orderCreated()')
+    }
+    outputMessage {
+        sentTo('Order')
+        body([orderId: 101])
+        headers {
+            header('event-aggregate-type', 'Order')
+            header('event-type', 'com.example.orders.OrderCreatedEvent')
+            header('event-aggregate-id', '99')
+        }
+    }
+}
+----
+
+The base class boots the application's publishing beans together with
+`@EnableEventuateTramContractVerifier`, which supplies the in-memory transport and the
+`MessageVerifierSender`/`MessageVerifierReceiver` that Spring Cloud Contract drives:
+
+[source,java]
+----
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE, classes = BaseClass.TestConfig.class)
+public abstract class BaseClass {
+
+    @Autowired
+    private DomainEventPublisher domainEventPublisher;
+
+    public void orderCreated() {
+        domainEventPublisher.publish("Order", "99", List.of(new OrderCreatedEvent(101)));
+    }
+
+    @Configuration
+    @EnableAutoConfiguration
+    @EnableEventuateTramContractVerifier
+    public static class TestConfig {
+    }
+}
+----
+
+=== Consumer side
+
+The consumer runs its handlers on the same in-memory transport and uses `StubFinder.trigger()` to
+make the producer's stub emit the message:
+
+[source,java]
+----
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
+@AutoConfigureStubRunner(ids = "com.example:order-service",
+        stubsMode = StubRunnerProperties.StubsMode.REMOTE,
+        repositoryRoot = "${contractRepoUrl}")
+@DirtiesContext
+public class OrderHistoryEventHandlersTest {
+
+    @Configuration
+    @EnableAutoConfiguration
+    @EnableEventuateTramContractVerifier
+    @Import(EventConsumerConfiguration.class)
+    public static class TestConfiguration {
+    }
+
+    @Autowired
+    private StubFinder stubFinder;
+
+    @MockitoBean
+    private CustomerService customerService;
+
+    @Test
+    public void shouldHandleOrderCreatedEvent() {
+        stubFinder.trigger("orderCreatedEvent");
+        eventually(() -> verify(customerService).reserveCredit(101L));
+    }
+}
+----
+
+=== Configuring the stub repository
+
+`ConfigureContractRepoDirPlugin` defines `contractRepoDir`/`contractRepoUrl`, and
+`PublishStubsPlugin` publishes the producer's `-stubs.jar` there. Pass the URL to the test JVM and
+make the consumer's tests depend on the producer's stub publication:
+
+[source,groovy]
+----
+test {
+    systemProperty "contractRepoUrl", contractRepoUrl
+}
+test.dependsOn(":order-service:publishStubsPublicationToStubsRepository")
+----
+
+NOTE: Spring Cloud Contract 5 renamed the stub runner property prefix from `stubrunner.*` to
+`spring.cloud.contract.stubrunner.*`. `-Dstubrunner.repositoryRoot=...` is silently ignored;
+use `-Dspring.cloud.contract.stubrunner.repositoryRoot=...`, or set `repositoryRoot` on
+`@AutoConfigureStubRunner` as shown above.
+
 == Example code
 
 The development branches of the following projects use this project:

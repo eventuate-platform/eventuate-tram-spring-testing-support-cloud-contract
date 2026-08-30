@@ -18,6 +18,9 @@ public class EventuateTramMessageVerifierReceiver implements MessageVerifierRece
 
     private static final Logger logger = org.slf4j.LoggerFactory.getLogger(EventuateTramMessageVerifierReceiver.class);
 
+    /* Matches the default used by Spring Cloud Contract's own receivers. */
+    private static final long DEFAULT_TIMEOUT_SECONDS = 5;
+
     private final Map<String, BlockingQueue<Message>> broker = new ConcurrentHashMap<>();
 
     private final MessageConsumer messageConsumer;
@@ -57,7 +60,7 @@ public class EventuateTramMessageVerifierReceiver implements MessageVerifierRece
 
     @Override
     public Message receive(String destination, YamlContract contract) {
-        return receive(destination, 1, TimeUnit.SECONDS, contract);
+        return receive(destination, DEFAULT_TIMEOUT_SECONDS, TimeUnit.SECONDS, contract);
     }
 
 }

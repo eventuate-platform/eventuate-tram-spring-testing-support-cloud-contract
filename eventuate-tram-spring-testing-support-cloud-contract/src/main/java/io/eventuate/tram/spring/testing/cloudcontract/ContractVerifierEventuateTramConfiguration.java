@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Import;
 public class ContractVerifierEventuateTramConfiguration {
 
     @Bean
-    EventuateTramMessageVerifierReceiver kafkaTemplateMessageVerifier(MessageConsumer messageConsumer) {
+    EventuateTramMessageVerifierReceiver messageVerifierReceiver(MessageConsumer messageConsumer) {
         return new EventuateTramMessageVerifierReceiver(messageConsumer);
     }
 

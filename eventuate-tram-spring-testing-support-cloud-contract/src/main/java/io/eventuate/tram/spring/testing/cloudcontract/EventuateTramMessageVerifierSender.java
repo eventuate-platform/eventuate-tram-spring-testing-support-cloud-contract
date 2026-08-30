@@ -6,7 +6,9 @@ import io.eventuate.tram.messaging.producer.MessageProducer;
 import org.springframework.cloud.contract.verifier.converter.YamlContract;
 import org.springframework.cloud.contract.verifier.messaging.MessageVerifierSender;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class EventuateTramMessageVerifierSender implements MessageVerifierSender<Message> {
 
@@ -18,17 +20,27 @@ public class EventuateTramMessageVerifierSender implements MessageVerifierSender
 
     @Override
     public void send(Message message, String destination, YamlContract contract) {
-        throw new UnsupportedOperationException();
+        messageProducer.send(destination, message);
     }
 
     @Override
     public <T> void send(T payload, Map<String, Object> headers, String destination, YamlContract contract) {
-        Map<String, String> mh = headers.entrySet().stream().collect(
-                java.util.stream.Collectors.toMap(
-                        Map.Entry::getKey,
-                        e -> e.getValue().toString()
-                )
-        );
-        messageProducer.send(destination, MessageBuilder.withPayload((String) payload).withExtraHeaders("", mh).build());
+        send(MessageBuilder
+                        .withPayload(asString(payload))
+                        .withExtraHeaders("", stringValued(headers))
+                        .build(),
+                destination,
+                contract);
+    }
+
+    private static String asString(Object payload) {
+        if (payload instanceof byte[])
+            return new String((byte[]) payload, StandardCharsets.UTF_8);
+        return payload == null ? null : payload.toString();
+    }
+
+    private static Map<String, String> stringValued(Map<String, Object> headers) {
+        return headers.entrySet().stream().collect(
+                Collectors.toMap(Map.Entry::getKey, e -> e.getValue().toString()));
     }
 }
